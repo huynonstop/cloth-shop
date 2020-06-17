@@ -1,0 +1,80 @@
+.directory-menu .menu-item {
+  max-width: 33%;
+  height: 300px;
+  flex: 1 1 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid black;
+  margin: 0 7.5px 15px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+
+    .item-background {
+      transform: scale(1.1);
+    }
+
+    .content {
+      border: 1px solid #000000;
+      background-color: white;
+      color: #000000;
+      transform: scale(1.05);
+
+      .title {
+        color: #000000;
+      }
+    }
+  }
+
+  &:first-child {
+    margin-right: 7.5px;
+  }
+
+  &:last-child {
+    margin-left: 7.5px;
+  }
+
+  &.large {
+    height: 578px;
+    max-width: 50%;
+    flex: 1 1 45%;
+  }
+
+  .item-background {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    transition: transform 6s cubic-bezier(0.25, 0.45, 0.45, 0.25);
+  }
+
+  .content {
+    position: absolute;
+    height: 90px;
+    padding: 0 35px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    background-color: rgba(245, 245, 245, 0.7);
+    font-weight: bold;
+    transition: all 0.3s ease-out;
+
+    .title {
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 6px;
+      font-size: 22px;
+      color: #4a4a4a;
+      transition: all 0.3s ease-out;
+    }
+
+    .subtitle {
+      font-weight: lighter;
+      font-size: 16px;
+    }
+  }
+}
