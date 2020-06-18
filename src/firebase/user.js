@@ -1,5 +1,5 @@
 import { firestore } from "./firebase.utils";
-export const createUserProfile = async (user, ...moreData) => {
+export const createUserProfile = async (user, moreData) => {
 	if (!user) return;
 
 	try {
@@ -7,12 +7,13 @@ export const createUserProfile = async (user, ...moreData) => {
 		const userRef = firestore.doc(`users/${uid}`);
 		const snapShot = await userRef.get();
 		if (!snapShot.exists) {
-			await userRef.set({
-				displayName,
+			const profile = {
 				email,
 				createAt: new Date(),
+				displayName: displayName,
 				...moreData,
-			});
+			};
+			await userRef.set(profile);
 		}
 		return userRef;
 	} catch (e) {

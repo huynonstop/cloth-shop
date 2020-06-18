@@ -13,10 +13,12 @@ import { createUserProfile } from "./firebase/user";
 const App = () => {
 	const [currentUser, setCurrentUser] = useState(null);
 	useEffect(() => {
+		let userRefSub = null;
 		const authSub = auth.onAuthStateChanged(async (user) => {
+			console.log(user);
 			if (user) {
 				const userRef = await createUserProfile(user);
-				userRef.onSnapshot((snapshot) => {
+				userRefSub = userRef.onSnapshot((snapshot) => {
 					setCurrentUser({
 						id: snapshot.id,
 						...snapshot.data(),
@@ -28,7 +30,10 @@ const App = () => {
 		});
 
 		return () => {
-			authSub.unsubscribeFromAuth();
+			if (userRefSub) {
+				userRefSub();
+			}
+			authSub();
 			console.log("unmount");
 		};
 	}, []);
