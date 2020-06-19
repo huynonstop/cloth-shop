@@ -2,6 +2,7 @@ import { TOGGLE_CART_DROPDOWN, ADD_ITEM_TO_CART } from "../types";
 const INITIAL_STATE = {
 	items: {},
 	hidden: true,
+	countItem: 0,
 };
 const addItem = (cart, item) => {
 	const itemInCart = cart[item.id];
@@ -27,9 +28,11 @@ const cartReducer = (state = INITIAL_STATE, { type, payload }) => {
 				hidden: !state.hidden,
 			};
 		case ADD_ITEM_TO_CART:
+			const items = addItem(state.items, payload);
 			return {
 				...state,
-				items: addItem(state.items, payload),
+				items,
+				countItem: state.countItem + 1,
 			};
 		default:
 			return state;

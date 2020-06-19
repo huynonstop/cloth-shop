@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import "./App.css";
 
+import CheckoutPage from "./Containers/CheckoutPage/checkoutPage";
 import AuthPage from "./Containers/AuthPage/authPage";
 import HomePage from "./Containers/HomePage/homePage";
 import ShopPage from "./Containers/ShopPage/shopPage";
@@ -55,6 +56,7 @@ const App = ({ currentUser, setCurrentUser }) => {
 							currentUser ? <Redirect to="/" /> : <AuthPage />
 						}
 					></Route>
+					<Route path="/checkout" component={CheckoutPage}></Route>
 					<Route path="/shop" component={ShopPage}></Route>
 					<Route path="/" component={HomePage}></Route>
 				</Switch>
