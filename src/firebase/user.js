@@ -20,3 +20,13 @@ export const createUserProfile = async (user, moreData) => {
 		throw new Error(e);
 	}
 };
+export const createUserRef = async (user) => {
+	if (!user) return;
+	try {
+		const { uid } = user;
+		const userRef = firestore.doc(`users/${uid}`);
+		return userRef;
+	} catch (e) {
+		throw new Error(e);
+	}
+};

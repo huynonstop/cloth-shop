@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 import "./App.css";
 
 import AuthPage from "./Containers/AuthPage/authPage";
@@ -9,39 +10,38 @@ import Header from "./Components/Header/header";
 
 import { auth } from "./firebase/firebase.utils";
 import { createUserProfile } from "./firebase/user";
+import { setCurrentUser } from "./redux/user/actions";
 
-const App = () => {
-	const [currentUser, setCurrentUser] = useState(null);
+const App = ({ setCurrentUser }) => {
 	useEffect(() => {
-		let userRefSub = null;
-		const authSub = auth.onAuthStateChanged(async (user) => {
-			console.log(user);
-			if (user) {
-				const userRef = await createUserProfile(user);
-				userRefSub = userRef.onSnapshot((snapshot) => {
-					setCurrentUser({
-						id: snapshot.id,
-						...snapshot.data(),
+		let userRefOnSnapshot = null;
+		const authOnAuthStateChanged = auth.onAuthStateChanged(
+			async (user) => {
+				if (user) {
+					const userRef = await createUserProfile(user); //Does not thing when existed
+					userRefOnSnapshot = userRef.onSnapshot((snapshot) => {
+						console.log(snapshot.data());
+						setCurrentUser({
+							id: snapshot.id,
+							...snapshot.data(),
+						});
 					});
-				});
-			} else {
-				setCurrentUser(null);
+				} else setCurrentUser(null);
 			}
-		});
+		);
 
 		return () => {
-			if (userRefSub) {
-				userRefSub();
+			if (userRefOnSnapshot) {
+				userRefOnSnapshot();
 			}
-			authSub();
+			authOnAuthStateChanged();
 			console.log("unmount");
 		};
-	}, []);
+	}, [setCurrentUser]);
 	return (
 		<>
 			<div className="container">
 				<Header
-					currentUser={currentUser}
 					signOut={() => {
 						auth.signOut();
 					}}
@@ -58,4 +58,6 @@ const App = () => {
 	);
 };
 
-export default App;
+export default connect(null, (dispatch) => ({
+	setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+}))(App);

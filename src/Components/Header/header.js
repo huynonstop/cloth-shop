@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 import "./header.styles.scss";
 
@@ -27,4 +28,6 @@ const Header = ({ currentUser, signOut }) => (
 		</nav>
 	</div>
 );
-export default Header;
+export default connect(({ user }) => ({
+	currentUser: user.currentUser,
+}))(Header);
