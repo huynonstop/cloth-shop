@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 import "./header.styles.scss";
+import CartIcon from "../CartIcon/cartIcon";
 
 const Header = ({ currentUser, signOut }) => (
 	<div className="header">
@@ -26,6 +27,7 @@ const Header = ({ currentUser, signOut }) => (
 				</Link>
 			)}
 		</nav>
+		<CartIcon />
 	</div>
 );
 export default connect(({ user }) => ({

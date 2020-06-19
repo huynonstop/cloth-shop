@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import "./App.css";
 
@@ -12,7 +12,7 @@ import { auth } from "./firebase/firebase.utils";
 import { createUserProfile } from "./firebase/user";
 import { setCurrentUser } from "./redux/user/actions";
 
-const App = ({ setCurrentUser }) => {
+const App = ({ currentUser, setCurrentUser }) => {
 	useEffect(() => {
 		let userRefOnSnapshot = null;
 		const authOnAuthStateChanged = auth.onAuthStateChanged(
@@ -49,7 +49,12 @@ const App = ({ setCurrentUser }) => {
 			</div>
 			<div className="container">
 				<Switch>
-					<Route path="/auth" component={AuthPage}></Route>
+					<Route
+						path="/auth"
+						render={() =>
+							currentUser ? <Redirect to="/" /> : <AuthPage />
+						}
+					></Route>
 					<Route path="/shop" component={ShopPage}></Route>
 					<Route path="/" component={HomePage}></Route>
 				</Switch>
@@ -58,6 +63,11 @@ const App = ({ setCurrentUser }) => {
 	);
 };
 
-export default connect(null, (dispatch) => ({
-	setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-}))(App);
+export default connect(
+	({ user }) => ({
+		currentUser: user.currentUser,
+	}),
+	(dispatch) => ({
+		setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+	})
+)(App);

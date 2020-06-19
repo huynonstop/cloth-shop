@@ -8,11 +8,22 @@
   margin: auto;
   padding: 20px 80px;
 
+  .logo-container {
+    flex: 1 1;
+
+    .logo {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+
   .navbar {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    position: relative;
+    z-index: 100;
 
     .nav-item {
       cursor: pointer;
