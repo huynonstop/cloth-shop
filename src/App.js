@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import "./App.css";
@@ -14,8 +14,22 @@ import { createUserProfile } from "./firebase/user";
 import { setCurrentUser } from "./redux/user/actions";
 
 const App = ({ currentUser, setCurrentUser }) => {
+	const [isSticky, setIsSticky] = useState(false);
+
+	const handleScroll = useCallback(() => {
+		if (window.pageYOffset > 80) {
+			if (!isSticky) {
+				setIsSticky(true);
+			}
+		} else {
+			if (isSticky) {
+				setIsSticky(false);
+			}
+		}
+	}, [isSticky]);
 	useEffect(() => {
 		let userRefOnSnapshot = null;
+
 		const authOnAuthStateChanged = auth.onAuthStateChanged(
 			async (user) => {
 				if (user) {
@@ -39,10 +53,19 @@ const App = ({ currentUser, setCurrentUser }) => {
 			console.log("unmount");
 		};
 	}, [setCurrentUser]);
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll);
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [handleScroll]);
 	return (
 		<>
 			<div className="container">
 				<Header
+					className={["header", isSticky ? "stick" : "unstick"].join(
+						" "
+					)}
 					signOut={() => {
 						auth.signOut();
 					}}

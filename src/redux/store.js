@@ -8,7 +8,6 @@ const logger = (store) => (next) => (action) => {
 	console.log("Next State: ", store.getState());
 	return result;
 };
-
 if (process.env.NODE_ENV === "development") {
 	middlewares.push(logger);
 }
@@ -18,4 +17,7 @@ const store = createStore(
 	rootReducer,
 	composeEnhancers(applyMiddleware(...middlewares))
 );
+store.subscribe(() => {
+	localStorage.setItem("cart", JSON.stringify(store.getState().cart));
+});
 export default store;

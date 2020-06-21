@@ -1,5 +1,8 @@
 .collection-item {
-  width: 22%;
+  flex: 1 1 24%;
+  max-width: 24%;
+  margin-bottom: 2rem;
+  padding: 0 15px;
   display: flex;
   flex-direction: column;
   height: 350px;
@@ -59,14 +62,12 @@
     font-size: 18px;
 
     .name {
-      width: 90%;
-      margin-bottom: 15px;
+      flex: 1 1;
     }
 
     .price {
-      width: 10%;
+      flex: 0 1;
       text-align: right;
-      transform: translateX(-50%);
     }
   }
 }

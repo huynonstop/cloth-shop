@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Route, Link } from "react-router-dom";
 import "./shopPage.styles.scss";
 import CollectionPreview from "../../Components/CollectionPreview/collectionPreview";
 
-const SHOP_DATA = [
-	{
+const SHOP_DATA = {
+	hats: {
 		id: 1,
 		title: "Hats",
 		routeName: "hats",
@@ -64,7 +65,7 @@ const SHOP_DATA = [
 			},
 		],
 	},
-	{
+	sneakers: {
 		id: 2,
 		title: "Sneakers",
 		routeName: "sneakers",
@@ -119,7 +120,7 @@ const SHOP_DATA = [
 			},
 		],
 	},
-	{
+	jackets: {
 		id: 3,
 		title: "Jackets",
 		routeName: "jackets",
@@ -156,7 +157,7 @@ const SHOP_DATA = [
 			},
 		],
 	},
-	{
+	womens: {
 		id: 4,
 		title: "Womens",
 		routeName: "womens",
@@ -205,7 +206,7 @@ const SHOP_DATA = [
 			},
 		],
 	},
-	{
+	mens: {
 		id: 5,
 		title: "Mens",
 		routeName: "mens",
@@ -248,22 +249,44 @@ const SHOP_DATA = [
 			},
 		],
 	},
-];
+};
 
-export default function ShopPage() {
+export default function ShopPage({ match }) {
 	const [shopData] = useState(SHOP_DATA);
+	const AllCollections = Object.keys(shopData).map((key) => {
+		const { id, items, title, routeName } = shopData[key];
+		return (
+			<CollectionPreview key={id} items={items.slice(0, 4)}>
+				<h1 className="title">
+					<Link to={`${match.path}/${routeName}`}>{title}</Link>
+				</h1>
+			</CollectionPreview>
+		);
+	});
 	return (
 		<div className="shop-page">
-			<h1>Shop Page</h1>
-			{shopData.map(({ id, items, ...data }) => {
-				return (
-					<CollectionPreview
-						key={id}
-						items={items.slice(0, 4)}
-						{...data}
-					/>
-				);
-			})}
+			<Route
+				path={`${match.path}/:collection`}
+				render={({ match }) => {
+					const { id, items, routeName } = shopData[
+						match.params.collection
+					];
+					return (
+						<>
+							<CollectionPreview key={id} items={items}>
+								<div className="collection">
+									<h1>{routeName}</h1>
+								</div>
+							</CollectionPreview>
+						</>
+					);
+				}}
+			/>
+			<Route
+				exact
+				path={`${match.path}`}
+				render={() => <>{AllCollections}</>}
+			/>
 		</div>
 	);
 }

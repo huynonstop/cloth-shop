@@ -1,6 +1,5 @@
 .checkout-page {
   width: 60%;
-  min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,7 +23,7 @@
   }
 
   .total {
-    margin-top: 30px;
+    margin-top: auto;
     margin-left: auto;
     font-size: 36px;
   }
