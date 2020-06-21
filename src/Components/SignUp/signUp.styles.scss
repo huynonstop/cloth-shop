@@ -1,10 +1,11 @@
   .sign-up {
     display: flex;
     flex-direction: column;
-    max-width: 50%;
+    max-width: 45%;
     flex-grow: 1;
     align-items: center;
-    padding: 0.75rem 0.75rem;
+    padding: 4rem 4rem;
+    box-shadow: 2px 5px 5px #cccccc;
 
     .title {
       margin: 10px 0;
