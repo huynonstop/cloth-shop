@@ -8,15 +8,19 @@ const logger = (store) => (next) => (action) => {
 	console.log("Next State: ", store.getState());
 	return result;
 };
+let store;
 if (process.env.NODE_ENV === "development") {
+	const composeEnhancers =
+		window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 	middlewares.push(logger);
+	store = createStore(
+		rootReducer,
+		composeEnhancers(applyMiddleware(...middlewares))
+	);
+} else {
+	store = createStore(rootReducer, applyMiddleware(...middlewares));
 }
-const composeEnhancers =
-	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-	rootReducer,
-	composeEnhancers(applyMiddleware(...middlewares))
-);
 store.subscribe(() => {
 	localStorage.setItem("cart", JSON.stringify(store.getState().cart));
 });
