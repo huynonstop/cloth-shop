@@ -81,6 +81,10 @@ const App = ({ currentUser, setCurrentUser }) => {
 					></Route>
 					<Route path="/checkout" component={CheckoutPage}></Route>
 					<Route path="/shop" component={ShopPage}></Route>
+					<Route
+						path="/contact"
+						component={() => <h1>Contact Info</h1>}
+					></Route>
 					<Route path="/" component={HomePage}></Route>
 				</Switch>
 			</div>

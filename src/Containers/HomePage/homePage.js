@@ -1,49 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import {
+	firestore,
+	fetchSnapshot,
+} from "../../firebase/firebase.utils";
+import { updateShop } from "../../redux/shop/action";
 import "./homePage.styles.scss";
+import WithSpinner from "../../Components/HOC/WithSpinner/withSpinner";
 import DirectoryMenu from "../../Components/DirectoryMenu/directoryMenu";
 
-const SECTIONS = [
-	{
-		title: "hats",
-		imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
-		id: 1,
-		linkUrl: "shop/hats",
-	},
-	{
-		title: "jackets",
-		imageUrl: "https://i.ibb.co/px2tCc3/jackets.png",
-		id: 2,
-		linkUrl: "shop/jackets",
-	},
-	{
-		title: "sneakers",
-		imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
-		id: 3,
-		linkUrl: "shop/sneakers",
-	},
-	{
-		title: "women",
-		imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
-		size: "large",
-		id: 4,
-		linkUrl: "shop/women",
-	},
-	{
-		title: "men",
-		imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
-		size: "large",
-		id: 5,
-		linkUrl: "shop/men",
-	},
-];
-
-const HomePage = () => {
-	const [menuSections] = useState(SECTIONS);
+const DirectoryMenuWithSpinner = WithSpinner(DirectoryMenu);
+const HomePage = ({ updateShop, collections }) => {
+	const [isLoading, setIsLoading] = useState(null);
+	useEffect(() => {
+		setIsLoading(true);
+		const collectionRef = firestore.collection("collections");
+		let collectionRefOnSnapshot = collectionRef.onSnapshot(
+			async (snapshot) => {
+				const collectionData = fetchSnapshot(snapshot);
+				updateShop(collectionData);
+				setIsLoading(false);
+			}
+		);
+		return () => {
+			collectionRefOnSnapshot();
+		};
+	}, [updateShop]);
 	return (
 		<div className="home-page">
-			<DirectoryMenu sections={menuSections} />
+			<DirectoryMenuWithSpinner
+				isLoading={isLoading}
+				collections={collections}
+			/>
 		</div>
 	);
 };
 
-export default HomePage;
+export default connect(
+	(state) => ({
+		collections: state.shop.collections,
+	}),
+	(dispatch) => ({
+		updateShop: (collections) => dispatch(updateShop(collections)),
+	})
+)(HomePage);
