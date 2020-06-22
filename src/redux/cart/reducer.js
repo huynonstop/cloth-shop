@@ -3,6 +3,7 @@ import {
 	ADD_ITEM_TO_CART,
 	REMOVE_ITEM_IN_CART,
 	CLEAR_ITEM_IN_CART,
+	CLEAR_CART,
 } from "../types";
 const INITIAL_STATE = localStorage.getItem("cart")
 	? JSON.parse(localStorage.getItem("cart"))
@@ -72,6 +73,12 @@ const cartReducer = (state = INITIAL_STATE, { type, payload }) => {
 				countItem: state.countItem - state.items[payload].quantity,
 			};
 		}
+		case CLEAR_CART:
+			return {
+				items: {},
+				hidden: true,
+				countItem: 0,
+			};
 		default:
 			return state;
 	}

@@ -3,6 +3,7 @@ import {
 	ADD_ITEM_TO_CART,
 	CLEAR_ITEM_IN_CART,
 	REMOVE_ITEM_IN_CART,
+	CLEAR_CART,
 } from "../types";
 export const toggleCartDropdown = (user) => ({
 	type: TOGGLE_CART_DROPDOWN,
@@ -19,4 +20,7 @@ export const clearItem = (id) => ({
 export const removeOneItem = (id) => ({
 	type: REMOVE_ITEM_IN_CART,
 	payload: id,
+});
+export const clearCart = () => ({
+	type: CLEAR_CART,
 });

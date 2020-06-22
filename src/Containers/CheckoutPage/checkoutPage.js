@@ -1,11 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
 
+import { clearCart } from "../../redux/cart/action";
 import "./checkoutPage.styles.scss";
 import CheckoutItem from "../../Components/CheckoutItem/checkoutItem";
+import StripeButton from "../../Components/StripeButton/stripeButton";
+import CustomButton from "../../Components/Custom/Button/button";
 
-const CheckoutPage = ({ items }) => {
+const CheckoutPage = ({ items, clearCart }) => {
 	const cartItems = Object.keys(items).map((key) => items[key]);
+	const totalPrice = cartItems.reduce(
+		(p, c) => (p = p + c.price * c.quantity),
+		0
+	);
 	return (
 		<div className="checkout-page">
 			<div className="checkout-header">
@@ -31,12 +38,20 @@ const CheckoutPage = ({ items }) => {
 					item={cartItem}
 				></CheckoutItem>
 			))}
-			<div className="total">
-				TOTAL: $
-				{cartItems.reduce(
-					(p, c) => (p = p + c.price * c.quantity),
-					0
-				)}
+			<div className="total">TOTAL: ${totalPrice}</div>
+			<div className="payment-row">
+				<StripeButton
+					price={totalPrice}
+					clearCart={clearCart}
+					ComponentClass="div"
+				>
+					<CustomButton className="red">PAY NOW</CustomButton>
+				</StripeButton>
+			</div>
+
+			<div className="payment-info">
+				<h2>*Test credit card for payments*</h2>
+				<h3>"4242 4242 4242 4242 - Exp: 01/21 - CW: 123"</h3>
 			</div>
 		</div>
 	);
@@ -45,4 +60,10 @@ const CheckoutPage = ({ items }) => {
 const mapStateToProps = (state) => ({
 	items: state.cart.items,
 });
-export default connect(mapStateToProps)(CheckoutPage);
+const mapDispatchToProps = (dispatch) => ({
+	clearCart: () => dispatch(clearCart()),
+});
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(CheckoutPage);

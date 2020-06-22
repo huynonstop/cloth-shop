@@ -17,7 +17,7 @@ const App = ({ currentUser, setCurrentUser }) => {
 	const [isSticky, setIsSticky] = useState(false);
 
 	const handleScroll = useCallback(() => {
-		if (window.pageYOffset > 80) {
+		if (window.pageYOffset > 100) {
 			if (!isSticky) {
 				setIsSticky(true);
 			}

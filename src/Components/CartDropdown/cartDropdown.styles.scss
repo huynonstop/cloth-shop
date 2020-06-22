@@ -16,6 +16,10 @@
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
+
+    .empty-message {
+      user-select: none;
+    }
   }
 
   button {
