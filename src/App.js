@@ -10,7 +10,7 @@ import ShopPage from "./Containers/ShopPage/shopPage";
 import Header from "./Components/Header/header";
 
 import { auth } from "./firebase/firebase.utils";
-import { createUserProfile } from "./firebase/user";
+import { createUserRef } from "./firebase/user";
 import { setCurrentUser } from "./redux/user/actions";
 
 const App = ({ currentUser, setCurrentUser }) => {
@@ -28,14 +28,12 @@ const App = ({ currentUser, setCurrentUser }) => {
 		}
 	}, [isSticky]);
 	useEffect(() => {
-		let userRefOnSnapshot = null;
-
 		const authOnAuthStateChanged = auth.onAuthStateChanged(
 			async (user) => {
 				if (user) {
-					const userRef = await createUserProfile(user); //Does not thing when existed
-					userRefOnSnapshot = userRef.onSnapshot((snapshot) => {
-						console.log(snapshot.data());
+					const userRef = await createUserRef(user); //Create new when existed
+					userRef.get().then((snapshot) => {
+						console.log(snapshot);
 						setCurrentUser({
 							id: snapshot.id,
 							...snapshot.data(),
@@ -46,9 +44,6 @@ const App = ({ currentUser, setCurrentUser }) => {
 		);
 
 		return () => {
-			if (userRefOnSnapshot) {
-				userRefOnSnapshot();
-			}
 			authOnAuthStateChanged();
 			console.log("unmount");
 		};

@@ -3,7 +3,7 @@ import { Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {
 	firestore,
-	fetchSnapshot,
+	transformCollectionsSnapshot,
 } from "../../firebase/firebase.utils";
 import { updateShop } from "../../redux/shop/action";
 import "./shopPage.styles.scss";
@@ -44,16 +44,11 @@ const ShopPage = ({ updateShop, collections, match }) => {
 	useEffect(() => {
 		setIsLoading(true);
 		const collectionRef = firestore.collection("collections");
-		let collectionRefOnSnapshot = collectionRef.onSnapshot(
-			async (snapshot) => {
-				const collectionData = fetchSnapshot(snapshot);
-				updateShop(collectionData);
-				setIsLoading(false);
-			}
-		);
-		return () => {
-			collectionRefOnSnapshot();
-		};
+		collectionRef.get().then((snapshot) => {
+			const collectionData = transformCollectionsSnapshot(snapshot);
+			updateShop(collectionData);
+			setIsLoading(false);
+		});
 	}, [updateShop]);
 	return (
 		<div className="shop-page">

@@ -19,12 +19,17 @@ export const addCollectionItems = (collectionKey, objectsToAdd) => {
 	});
 	return batch.commit();
 };
-export const fetchSnapshot = (collections) => {
-	const fetchedCollections = collections.docs.map((doc) => {
+export const transformCollectionsSnapshot = (snapshot) => {
+	const fetchedCollections = snapshot.docs.map((doc) => {
 		return { ...doc.data(), id: doc.id };
 	});
 	return fetchedCollections.reduce((p, c) => {
 		p[c.title.toLowerCase()] = c;
 		return p;
 	}, {});
+};
+export const fetchEndpoint = (url) => {
+	return fetch(
+		`https://firestore.googleapis.com/v1/projects/${CONFIG.projectId}/databases/(default)/documents/${url}`
+	).then((res) => res.json());
 };

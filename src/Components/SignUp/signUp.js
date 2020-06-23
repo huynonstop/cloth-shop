@@ -4,7 +4,7 @@ import FormInput from "../FormInput/formInput";
 import CustomButton from "../Custom/Button/button";
 
 import { auth } from "../../firebase/firebase.utils";
-import { createUserProfile } from "../../firebase/user";
+import { createUserRef } from "../../firebase/user";
 
 const SignUp = () => {
 	const [displayName, setDisplayName] = useState("");
@@ -28,7 +28,7 @@ const SignUp = () => {
 				email,
 				password
 			);
-			await createUserProfile({ ...user }, { displayName });
+			await createUserRef({ ...user }, { displayName });
 			setDisplayName("");
 			setEmail("");
 			setPassword("");

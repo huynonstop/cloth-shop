@@ -1,5 +1,5 @@
 import { firestore } from "./firebase.utils";
-export const createUserProfile = async (user, moreData) => {
+export const createUserRef = async (user, moreData) => {
 	if (!user) return;
 
 	try {
@@ -15,16 +15,6 @@ export const createUserProfile = async (user, moreData) => {
 			};
 			await userRef.set(profile);
 		}
-		return userRef;
-	} catch (e) {
-		throw new Error(e);
-	}
-};
-export const createUserRef = async (user) => {
-	if (!user) return;
-	try {
-		const { uid } = user;
-		const userRef = firestore.doc(`users/${uid}`);
 		return userRef;
 	} catch (e) {
 		throw new Error(e);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
 	firestore,
-	fetchSnapshot,
+	transformCollectionsSnapshot,
 } from "../../firebase/firebase.utils";
 import { updateShop } from "../../redux/shop/action";
 import "./homePage.styles.scss";
@@ -15,16 +15,11 @@ const HomePage = ({ updateShop, collections }) => {
 	useEffect(() => {
 		setIsLoading(true);
 		const collectionRef = firestore.collection("collections");
-		let collectionRefOnSnapshot = collectionRef.onSnapshot(
-			async (snapshot) => {
-				const collectionData = fetchSnapshot(snapshot);
-				updateShop(collectionData);
-				setIsLoading(false);
-			}
-		);
-		return () => {
-			collectionRefOnSnapshot();
-		};
+		collectionRef.get().then((snapshot) => {
+			const collectionData = transformCollectionsSnapshot(snapshot);
+			updateShop(collectionData);
+			setIsLoading(false);
+		});
 	}, [updateShop]);
 	return (
 		<div className="home-page">
