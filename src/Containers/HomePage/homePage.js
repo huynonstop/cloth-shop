@@ -1,26 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import {
-	firestore,
-	transformCollectionsSnapshot,
-} from "../../firebase/firebase.utils";
-import { updateShop } from "../../redux/shop/action";
+import { fetchShop } from "../../redux/shop/action";
 import "./homePage.styles.scss";
 import WithSpinner from "../../Components/HOC/WithSpinner/withSpinner";
 import DirectoryMenu from "../../Components/DirectoryMenu/directoryMenu";
 
 const DirectoryMenuWithSpinner = WithSpinner(DirectoryMenu);
-const HomePage = ({ updateShop, collections }) => {
-	const [isLoading, setIsLoading] = useState(null);
+const HomePage = ({ fetchShop, collections, isLoading }) => {
 	useEffect(() => {
-		setIsLoading(true);
-		const collectionRef = firestore.collection("collections");
-		collectionRef.get().then((snapshot) => {
-			const collectionData = transformCollectionsSnapshot(snapshot);
-			updateShop(collectionData);
-			setIsLoading(false);
-		});
-	}, [updateShop]);
+		fetchShop();
+	}, [fetchShop]);
 	return (
 		<div className="home-page">
 			<DirectoryMenuWithSpinner
@@ -34,8 +23,9 @@ const HomePage = ({ updateShop, collections }) => {
 export default connect(
 	(state) => ({
 		collections: state.shop.collections,
+		isLoading: state.shop.fetching,
 	}),
 	(dispatch) => ({
-		updateShop: (collections) => dispatch(updateShop(collections)),
+		fetchShop: () => dispatch(fetchShop()),
 	})
 )(HomePage);

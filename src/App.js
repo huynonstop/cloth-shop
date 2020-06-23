@@ -33,7 +33,6 @@ const App = ({ currentUser, setCurrentUser }) => {
 				if (user) {
 					const userRef = await createUserRef(user); //Create new when existed
 					userRef.get().then((snapshot) => {
-						console.log(snapshot);
 						setCurrentUser({
 							id: snapshot.id,
 							...snapshot.data(),

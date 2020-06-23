@@ -19,6 +19,9 @@ export const addCollectionItems = (collectionKey, objectsToAdd) => {
 	});
 	return batch.commit();
 };
+// addCollectionAnItems("collections", SHOP_DATA).then(() =>
+// 	console.log("done")
+// );
 export const transformCollectionsSnapshot = (snapshot) => {
 	const fetchedCollections = snapshot.docs.map((doc) => {
 		return { ...doc.data(), id: doc.id };

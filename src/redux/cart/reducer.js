@@ -5,13 +5,11 @@ import {
 	CLEAR_ITEM_IN_CART,
 	CLEAR_CART,
 } from "../types";
-const INITIAL_STATE = localStorage.getItem("cart")
-	? JSON.parse(localStorage.getItem("cart"))
-	: {
-			items: {},
-			hidden: true,
-			countItem: 0,
-	  };
+const INITIAL_STATE = {
+	items: {},
+	hidden: true,
+	countItem: 0,
+};
 const addItem = (cart, item) => {
 	const itemInCart = cart[item.id];
 	const newItemInCart = itemInCart

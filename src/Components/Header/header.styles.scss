@@ -9,13 +9,14 @@
   padding: 20px 80px;
   box-shadow: 0 2px 3px #cccccc;
   transition: all 0.3s ease-in-out;
+  background: white;
 
   &.stick {
     padding: 20px 80px;
     position: fixed;
     z-index: 10000;
     top: 0;
-    background: white;
+    background: whitesmoke;
     box-shadow: 2px 5px 5px #cccccc;
     animation: zoomOut 0.3s ease-in forwards;
   }

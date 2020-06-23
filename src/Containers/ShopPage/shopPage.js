@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-	firestore,
-	transformCollectionsSnapshot,
-} from "../../firebase/firebase.utils";
-import { updateShop } from "../../redux/shop/action";
+import { compose } from "redux";
+import { fetchShop } from "../../redux/shop/action";
 import "./shopPage.styles.scss";
 import WithSpinner from "../../Components/HOC/WithSpinner/withSpinner";
 import CollectionPreview from "../../Components/CollectionPreview/collectionPreview";
 
-// addCollectionAnItems("collections", SHOP_DATA).then(() =>
-// 	console.log("done")
-// );
-const SingleCollection = WithSpinner(({ match, collections }) => {
+const connectWithSpinner = compose(
+	connect((state) => ({
+		collections: state.shop.collections,
+		isLoading: state.shop.fetching,
+	})),
+	WithSpinner
+);
+const Collection = connectWithSpinner(({ match, collections }) => {
 	const collection = collections
 		? collections[match.params.collection]
 		: null;
@@ -25,7 +26,7 @@ const SingleCollection = WithSpinner(({ match, collections }) => {
 		</CollectionPreview>
 	) : null;
 });
-const Collections = WithSpinner(({ match, collections }) =>
+const Collections = connectWithSpinner(({ match, collections }) =>
 	collections
 		? Object.keys(collections).map((key) => {
 				const { id, items, title, routeName } = collections[key];
@@ -39,48 +40,26 @@ const Collections = WithSpinner(({ match, collections }) =>
 		  })
 		: null
 );
-const ShopPage = ({ updateShop, collections, match }) => {
-	const [isLoading, setIsLoading] = useState(null);
+const ShopPage = ({ fetchShop, match }) => {
 	useEffect(() => {
-		setIsLoading(true);
-		const collectionRef = firestore.collection("collections");
-		collectionRef.get().then((snapshot) => {
-			const collectionData = transformCollectionsSnapshot(snapshot);
-			updateShop(collectionData);
-			setIsLoading(false);
-		});
-	}, [updateShop]);
+		fetchShop();
+	}, [fetchShop]);
 	return (
 		<div className="shop-page">
 			<Route
 				path={`${match.path}/:collection`}
-				render={(props) => (
-					<SingleCollection
-						isLoading={isLoading}
-						collections={collections}
-						{...props}
-					></SingleCollection>
-				)}
+				component={Collection}
+				// render={(props) => <Collection {...props}></Collection>}
 			/>
 			<Route
 				exact
 				path={`${match.path}`}
-				render={(props) => (
-					<Collections
-						isLoading={isLoading}
-						collections={collections}
-						{...props}
-					></Collections>
-				)}
+				component={Collections}
+				// render={(props) => <Collections {...props}></Collections>}
 			/>
 		</div>
 	);
 };
-export default connect(
-	(state) => ({
-		collections: state.shop.collections,
-	}),
-	(dispatch) => ({
-		updateShop: (collections) => dispatch(updateShop(collections)),
-	})
-)(ShopPage);
+export default connect(null, (dispatch) => ({
+	fetchShop: () => dispatch(fetchShop()),
+}))(ShopPage);

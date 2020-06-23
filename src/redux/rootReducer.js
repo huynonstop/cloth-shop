@@ -7,3 +7,12 @@ export default combineReducers({
 	cart: cartReducer,
 	shop: shopReducer,
 });
+export const preloadedState = {
+	cart: localStorage.getItem("cart")
+		? JSON.parse(localStorage.getItem("cart"))
+		: {
+				items: {},
+				hidden: true,
+				countItem: 0,
+		  },
+};
