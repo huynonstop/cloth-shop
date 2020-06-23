@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import "./App.css";
 
+import { clearCart } from "./redux/cart/action";
 import CheckoutPage from "./Containers/CheckoutPage/checkoutPage";
 import AuthPage from "./Containers/AuthPage/authPage";
 import HomePage from "./Containers/HomePage/homePage";
@@ -13,7 +14,7 @@ import { auth } from "./firebase/firebase.utils";
 import { createUserRef } from "./firebase/user";
 import { setCurrentUser } from "./redux/user/actions";
 
-const App = ({ currentUser, setCurrentUser }) => {
+const App = ({ clearCart, currentUser, setCurrentUser }) => {
 	const [isSticky, setIsSticky] = useState(false);
 
 	const handleScroll = useCallback(() => {
@@ -61,6 +62,7 @@ const App = ({ currentUser, setCurrentUser }) => {
 						" "
 					)}
 					signOut={() => {
+						clearCart();
 						auth.signOut();
 					}}
 				/>
@@ -91,6 +93,7 @@ export default connect(
 		currentUser: user.currentUser,
 	}),
 	(dispatch) => ({
+		clearCart: () => dispatch(clearCart()),
 		setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 	})
 )(App);
