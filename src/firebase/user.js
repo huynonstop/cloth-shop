@@ -6,7 +6,7 @@ import {
 import { fs, auth } from '.';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-export const createUserIfNotExists = async (userAuth) => {
+export const createUserIfNotExists = async (userAuth, additionalInformation = {}) => {
   const { uid } = userAuth;
   const userDocRef = doc(fs, 'users', uid);
   const userSnapshot = await getDoc(userDocRef)
@@ -19,6 +19,7 @@ export const createUserIfNotExists = async (userAuth) => {
         displayName,
         email,
         createdAt,
+        ...additionalInformation
       });
     } catch (error) {
       console.log('error creating the user', error.message);

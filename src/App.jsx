@@ -3,10 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './pages/home/Home';
 import MainLayout from './component/layout/MainLayout';
 import Auth from './pages/auth/Auth';
+import Shop from './pages/shop/Shop';
+import Checkout from './pages/checkout/Checkout';
 
-function Shop() {
-  return <div>Hi i'm shop</div>;
-}
 
 function App() {
   return (
@@ -15,6 +14,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="shop" element={<Shop />} />
         <Route path="auth" element={<Auth />} />
+        <Route path="checkout" element={<Checkout />} />
       </Route>
     </Routes>
   );
