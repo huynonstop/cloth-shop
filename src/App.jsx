@@ -1,23 +1,23 @@
-import { useState, useEffect, useCallback } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+// import { useState, useEffect, useCallback } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Home from './pages/home/Home';
 import MainLayout from './component/layout/MainLayout';
-import SignIn from './pages/signin/SignIn';
+import Auth from './pages/auth/Auth';
 
-const Shop = () => {
-  return <div>Hi i'm shop</div>
+function Shop() {
+  return <div>Hi i'm shop</div>;
 }
 
-const App = () => {
+function App() {
   return (
     <Routes>
-      <Route path='/' element={<MainLayout />}>
+      <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
-        <Route path='shop' element={<Shop />}></Route>
-        <Route path='sign-in' element={<SignIn />}></Route>
+        <Route path="shop" element={<Shop />} />
+        <Route path="auth" element={<Auth />} />
       </Route>
     </Routes>
   );
 }
 
-export default App
+export default App;
