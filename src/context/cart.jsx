@@ -43,6 +43,7 @@ export const CartContext = createContext({
   addItemToCart: () => { },
   removeItemFromCart: () => { },
   clearItemFromCart: () => { },
+  checkout: () => { }
 });
 
 export const CartProvider = ({ children }) => {
@@ -72,7 +73,11 @@ export const CartProvider = ({ children }) => {
     setCartItems(clearCartItem(cartItems, cartItemToClear));
   };
 
-  const contextValue = { cartItems, cartCount, cartTotal, removeItemFromCart, clearItemFromCart, addItemToCart };
+  const checkout = () => {
+    setCartItems([]);
+  }
+
+  const contextValue = { cartItems, cartCount, cartTotal, removeItemFromCart, clearItemFromCart, addItemToCart, checkout };
 
   return <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>;
 };

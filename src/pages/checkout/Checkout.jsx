@@ -5,10 +5,14 @@ import { CartContext } from '../../context/cart';
 import CheckoutItem from './CheckoutItem';
 
 import './checkout.scss';
+import Button from '../../component/custom-element/Button';
+import { UserContext } from '../../context/user';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-  const { cartItems, cartTotal } = useContext(CartContext);
-
+  const { cartItems, cartTotal, checkout } = useContext(CartContext);
+  const { currentUser } = useContext(UserContext)
+  const navigate = useNavigate();
   return (
     <div className='checkout-container'>
       <div className='checkout-header'>
@@ -32,6 +36,11 @@ const Checkout = () => {
         <CheckoutItem key={cartItem.id} cartItem={cartItem} />
       ))}
       <div className='total'>TOTAL: ${cartTotal}</div>
+      <div className='total'>{
+        currentUser ?
+          <Button onClick={() => checkout()}>Place order</Button> :
+          <Button onClick={() => navigate('/auth')}>Please login to Finish your order</Button>
+      }</div>
     </div>
   );
 };

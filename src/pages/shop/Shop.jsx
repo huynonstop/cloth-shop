@@ -1,6 +1,6 @@
 import ProductCard from '../../component/product/ProductCard';
 import './shop.scss';
-import { products, SHOP_DATA } from './product-data'
+import { SHOP_DATA } from './product-data'
 
 const Shop = () => {
   return (
@@ -8,7 +8,7 @@ const Shop = () => {
       {
         SHOP_DATA.map(({ title, items }) => {
           return (
-            <div className='category' id={title.toLowerCase()}>
+            <div className='category' key={title.toLowerCase()} id={title.toLowerCase()}>
               <h2>{title}</h2>
               <div className='products-container'>
                 {items.map((product) => (
