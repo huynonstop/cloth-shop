@@ -7,10 +7,9 @@ import { UserContext } from '../../context/user'
 import { signOutGoogle } from '../../firebase'
 
 const NavBar = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const signOutHandler = async () => {
     await signOutGoogle();
-    setCurrentUser(null);
   };
   return (
     <nav className='main-nav'>

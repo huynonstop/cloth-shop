@@ -8,6 +8,7 @@ import {
   signOut,
   signInWithRedirect,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 const app = initializeApp(CONFIG);
@@ -25,3 +26,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   return await signInWithEmailAndPassword(auth, email, password);
 };
 export const fs = getFirestore(app);
+
+export const authStateListener = (cb) => {
+  return onAuthStateChanged(auth, cb)
+}

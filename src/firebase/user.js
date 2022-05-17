@@ -6,7 +6,7 @@ import {
 import { fs, auth } from '.';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
-export const createUser = async (userAuth) => {
+export const createUserIfNotExists = async (userAuth) => {
   const { uid } = userAuth;
   const userDocRef = doc(fs, 'users', uid);
   const userSnapshot = await getDoc(userDocRef)

@@ -5,7 +5,7 @@ import Button from '../../../component/custom-element/Button';
 
 import {
   createAuthUserWithEmailAndPassword,
-  createUser,
+  createUserIfNotExists,
 } from '../../../firebase/user';
 
 import './signupForm.scss';
@@ -43,8 +43,7 @@ const SignUpForm = () => {
         email,
         password
       );
-
-      await createUser(user, { displayName });
+      await createUserIfNotExists(user, { displayName });
       resetFormFields();
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
