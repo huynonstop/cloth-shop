@@ -38,10 +38,10 @@ const Checkout = () => {
       <div className='total'>TOTAL: ${cartTotal}</div>
       <div className='total'>{
         currentUser ?
-          <Button onClick={() => checkout()}>Place order</Button> :
+          (cartItems.length ? <Button onClick={() => checkout()}>Place order</Button> : <></>) :
           <Button onClick={() => navigate('/auth')}>Please login to Finish your order</Button>
       }</div>
-    </div>
+    </div >
   );
 };
 

@@ -1,11 +1,9 @@
-// import { useState, useEffect, useCallback } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './pages/home/Home';
 import MainLayout from './component/layout/MainLayout';
 import Auth from './pages/auth/Auth';
 import Shop from './pages/shop/Shop';
 import Checkout from './pages/checkout/Checkout';
-
 
 function App() {
   return (
